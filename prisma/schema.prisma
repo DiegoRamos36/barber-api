@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,44 +13,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id Int @id @default(autoincrement())
-  phone String @unique
-  password String
-  name String
-  role String
+model User {
+  id         Int      @id @default(autoincrement())
+  phone      String   @unique
+  password   String
+  name       String
+  role       String
   created_at DateTime @default(now())
-  posts posts[]
+  posts      Post[]
 }
 
-model appointment {
-  id Int @id @default(autoincrement())
+model Appointment {
+  id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  type String
-  date String
-  time String
+  type       String
+  date       String
+  time       String
 }
 
-model posts {
-  id Int @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  title String
-  description String
-  image String
-  user user @relation(fields: [userId], references: [id]) 
-  userId Int
-  request_logs request_logs[]
-
+model Post {
+  id           Int           @id @default(autoincrement())
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  title        String
+  description  String
+  image        String
+  user         User          @relation(fields: [userId], references: [id])
+  userId       Int
+  request_logs Request_log[]
 }
 
-
-model request_logs {
-  id String @id @default(uuid())
+model Request_log {
+  id         String   @id @default(uuid())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  post   posts @relation(fields: [postId], references: [id])
-  postId Int
-
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int
 }
