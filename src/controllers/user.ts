@@ -6,7 +6,7 @@ import { Role } from '../utils/role';
 export async function createUser(req: FastifyRequest, res: FastifyReply) {
   const data = req.body as User;
 
-  if (!hasProps(data, ['phone', 'password', 'name'])) {
+  if (!hasProps(data, ['phone', 'password', 'name', 'brandId'])) {
     return res.status(400).send({ success: false, message: 'Preencha todos os dados!' });
   }
 
@@ -14,7 +14,8 @@ export async function createUser(req: FastifyRequest, res: FastifyReply) {
     phone: data.phone,
     password: data.password,
     role: Role.CLIENTE,
-    name: data.name
+    name: data.name,
+    brandId: data.brandId
   }
 
   try {
@@ -29,9 +30,9 @@ export async function createUser(req: FastifyRequest, res: FastifyReply) {
 }
 
 export async function login(req: FastifyRequest, res: FastifyReply) {
-    const data = req.body as {phone: string, password: string}
+    const data = req.body as {phone: string, password: string, brandId: string}
 
-    if(!hasProps(data, ['phone', 'password'])) return res.status(400).send({success: false, message: "Preencha todos os dados!"})
+    if(!hasProps(data, ['phone', 'password', 'brandId'])) return res.status(400).send({success: false, message: "Preencha todos os dados!"})
 
     try {
         const user = await findByPhoneAndPassword(data);

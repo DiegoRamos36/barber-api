@@ -5,20 +5,31 @@ const prisma = new PrismaClient();
 export type Appointment = Omit<appointment, 'id' | 'created_at' | 'updated_at'>
 
 export async function create(appointment: Appointment) {
+    const {brandId, ...appointments} = appointment
     return await prisma.appointment.create({
-        data: appointment
+        data: {
+            ...appointments,
+            brand: {
+                connect: { id: appointment.brandId}
+            }
+        }
     })
 }
 
-export async function findAll() {
-    return await prisma.appointment.findMany();
+export async function findAll(brandId: string) {
+    return await prisma.appointment.findMany({
+        where: {
+            brandId: Number(brandId)
+        }
+    });
 
 }
 
-export async function findById(id: string) {
+export async function findById(id: string, brandId: string) {
     return await prisma.post.findUnique({
         where: {
-            id: Number(id)
+            id: Number(id),
+            brandId: Number(brandId)
         }
     })
 }

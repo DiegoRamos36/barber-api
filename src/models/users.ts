@@ -10,18 +10,28 @@ export async function create(user: User) {
          name: user.name,
          password: await bcrypt.hash(user.password, 10),
          phone: user.phone,
-         role: user.role
+         role: user.role,
+         brandId: user.brandId
     }
+    const {brandId, ...parsedUser} = parseUser
     
     return await prisma.user.create({
-        data: parseUser
+        data: {
+            ...parsedUser,
+            brand: {
+                connect: {id: Number(brandId)}
+            }
+        }
     })
 }
 
-export async function findByPhoneAndPassword({phone, password}: {phone: string, password: string}) {
+export async function findByPhoneAndPassword({phone, password, brandId}: {phone: string, password: string, brandId: string}) {
    const user = await prisma.user.findUnique({
     where: {
-        phone: phone
+        phone_brandId: {
+            phone: phone,
+            brandId: Number(brandId)
+        }
     }
    })
    

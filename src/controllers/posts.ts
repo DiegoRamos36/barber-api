@@ -52,9 +52,10 @@ export async function deletePost (req: FastifyRequest, res: FastifyReply) {
 
 }
 
-export async function findPost (_req: FastifyRequest, res: FastifyReply) {
+export async function findPost (req: FastifyRequest, res: FastifyReply) {
+    const {brandId} = req.params as {brandId: string}
     try {
-        const posts = await findAll();
+        const posts = await findAll(brandId);
         if(!posts) throw new Error(`Nenhum post encontrado!`);
         return res.status(200).send({success: true, posts: posts})
     } catch(error) {
@@ -64,7 +65,7 @@ export async function findPost (_req: FastifyRequest, res: FastifyReply) {
 }
 
 export async function findByIdPost(req: FastifyRequest, res: FastifyReply) {
-    const {id} = req.params as {id: string}
+    const {brandId, id} = req.params as {brandId:string, id: string}
 
     try {
         const posts = await findById(id);

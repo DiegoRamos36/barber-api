@@ -4,5 +4,5 @@ import { getBrandDetails } from '../controllers/brand';
 
 
 export default async function brandsRoutes(server: FastifyInstance) {
-  server.get('/', getBrandDetails );
+  server.post('/', getBrandDetails );
 }

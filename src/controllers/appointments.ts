@@ -20,8 +20,9 @@ export async function createAppointment(req: FastifyRequest,res: FastifyReply) {
 }
 
 export async function getAppointments(req: FastifyRequest, res: FastifyReply) {
+    const {brandId} = req.params as {brandId: string}
     try {
-      const appointments = await findAll();
+      const appointments = await findAll(brandId);
       return res.status(200).send({ success: true, data: appointments });
     } catch (error) {
       return res.status(500).send({ success: false, message: `Erro ao buscar agendamentos: ${error}` });
@@ -29,10 +30,10 @@ export async function getAppointments(req: FastifyRequest, res: FastifyReply) {
   }
 
   export async function getAppointmentById(req: FastifyRequest, res: FastifyReply) {
-    const { id } = req.params as { id: string };
+    const { brandId,id } = req.params as { id: string, brandId: string };
   
     try {
-      const appointment = await findById(id);
+      const appointment = await findById(id, brandId);
       if (!appointment) return res.status(404).send({ success: false, message: 'Agendamento não encontrado' });
   
       return res.send({ success: true, data: appointment });
