@@ -1,12 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { hasProps } from '../utils/hasProps'; 
-import { create, User } from '../models/users';
+import { create, findByPhoneAndPassword, User } from '../models/users';
 import { Role } from '../utils/role';
 
-export async function createUserController(req: FastifyRequest, res: FastifyReply) {
+export async function createUser(req: FastifyRequest, res: FastifyReply) {
   const data = req.body as User;
 
-  if (!hasProps(data, ['phone', 'password'])) {
+  if (!hasProps(data, ['phone', 'password', 'name'])) {
     return res.status(400).send({ success: false, message: 'Preencha todos os dados!' });
   }
 
@@ -22,8 +22,22 @@ export async function createUserController(req: FastifyRequest, res: FastifyRepl
 
     if (!user) throw new Error('Falha ao criar usuário');
 
-    return res.status(201).send({ success: true, message: 'Usuário criado com sucesso!', user });
+    return res.status(201).send({ success: true, message: 'Usuário criado com sucesso!' });
   } catch (error) {
     return res.status(422).send({ success: false, message: `Erro: ${error}` });
   }
+}
+
+export async function login(req: FastifyRequest, res: FastifyReply) {
+    const data = req.body as {phone: string, password: string}
+
+    if(!hasProps(data, ['phone', 'password'])) return res.status(400).send({success: false, message: "Preencha todos os dados!"})
+
+    try {
+        const user = await findByPhoneAndPassword(data);
+        if(!user) throw new Error("Usuário ou senha incorreto!")
+        return res.status(200).send({success:true, data: user})
+    } catch (error) {
+        return res.status(500).send({success: false, message: error})
+    }    
 }
