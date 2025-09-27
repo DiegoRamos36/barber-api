@@ -1,6 +1,8 @@
-import { PrismaClient, Appointment } from "@prisma/client";
+import { PrismaClient, Appointment as appointment } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
+export type Appointment = Omit<appointment, 'id' | 'created_at' | 'updated_at'>
 
 export async function create(appointment: Appointment) {
     return await prisma.appointment.create({
@@ -21,7 +23,7 @@ export async function findById(id: string) {
     })
 }
 
-export async function update(id: string, data: Partial<Appointment>) {
+export async function update(id: string, data: Partial<appointment>) {
     return await prisma.post.update({
         where: {
             id: Number(id)

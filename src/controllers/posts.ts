@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { hasProps } from "../utils/hasProps";
 import { create, findAll, findById, Post, remove, update } from "../models/posts";
 
-export async function createPostController (req: FastifyRequest, res: FastifyReply) {
+export async function createPost (req: FastifyRequest, res: FastifyReply) {
     const data = req.body as Post
 
     if(!hasProps(data, ['title', 'description', 'image', 'userId'])) {
@@ -21,7 +21,7 @@ export async function createPostController (req: FastifyRequest, res: FastifyRep
         
 }
 
-export async function updatePostController (req: FastifyRequest, res: FastifyReply) {
+export async function updatePost (req: FastifyRequest, res: FastifyReply) {
     const {id} = req.params as {id: string};
     const data = req.body as Partial<Post>;
 
@@ -37,7 +37,7 @@ export async function updatePostController (req: FastifyRequest, res: FastifyRep
 
 }
 
-export async function deletePostController (req: FastifyRequest, res: FastifyReply) {
+export async function deletePost (req: FastifyRequest, res: FastifyReply) {
     const {id} = req.params as {id: string};
 
     try {
@@ -52,7 +52,7 @@ export async function deletePostController (req: FastifyRequest, res: FastifyRep
 
 }
 
-export async function findPostController (_req: FastifyRequest, res: FastifyReply) {
+export async function findPost (_req: FastifyRequest, res: FastifyReply) {
     try {
         const posts = await findAll();
         if(!posts) throw new Error(`Nenhum post encontrado!`);
@@ -63,7 +63,7 @@ export async function findPostController (_req: FastifyRequest, res: FastifyRepl
     
 }
 
-export async function findByIdPostController(req: FastifyRequest, res: FastifyReply) {
+export async function findByIdPost(req: FastifyRequest, res: FastifyReply) {
     const {id} = req.params as {id: string}
 
     try {
