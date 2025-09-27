@@ -3,6 +3,7 @@ import postRoutes from './routes/postsRoutes';
 import appointmentRoutes from './routes/appointments';
 import jwt from '@fastify/jwt';
 import userRoutes from './routes/user';
+import brandsRoutes from './routes/brandsRoutes';
 
 
 
@@ -28,6 +29,7 @@ server.decorate("authenticate", async function (request, reply) {
 server.register(postRoutes, {prefix: '/posts'})
 server.register(appointmentRoutes, {prefix: '/appointments'});
 server.register(userRoutes, {prefix: '/auth'})
+server.register(brandsRoutes, {prefix: '/brand'})
 
 
 

@@ -51,3 +51,14 @@ model Request_log {
   post       Post     @relation(fields: [postId], references: [id])
   postId     Int
 }
+
+model Brand {
+  id Int @id @default(autoincrement())
+  name String
+  img String
+  primary_color String?
+  secondary_color String?
+  terciary_color String?
+  whatsapp String?
+  slug String @unique
+}
