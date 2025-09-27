@@ -35,9 +35,8 @@ export async function login(req: FastifyRequest, res: FastifyReply) {
 
     try {
         const user = await findByPhoneAndPassword(data);
-        if(!user) throw new Error("Usuário ou senha incorreto!")
         return res.status(200).send({success:true, data: {name: user.name, role: user.role, phone: user.phone}})
     } catch (error) {
-        return res.status(500).send({success: false, message: error})
+        return res.status(500).send({success: false, message: 'Verifique novamente os dados!'})
     }    
 }
